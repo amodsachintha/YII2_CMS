@@ -1,13 +1,13 @@
 <?php
 
-namespace app\models;
+namespace app\models\auth;
 
 /**
- * This is the ActiveQuery class for [[AuthAssignment]].
+ * This is the ActiveQuery class for [[AuthRule]].
  *
- * @see AuthAssignment
+ * @see AuthRule
  */
-class AuthAssignmentQuery extends \yii\db\ActiveQuery
+class AuthRuleQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class AuthAssignmentQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return AuthAssignment[]|array
+     * @return AuthRule[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class AuthAssignmentQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return AuthAssignment|array|null
+     * @return AuthRule|array|null
      */
     public function one($db = null)
     {
