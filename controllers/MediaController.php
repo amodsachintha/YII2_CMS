@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Media;
-use yii\data\ActiveDataProvider;
+use app\models\searches\MediaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,11 +35,11 @@ class MediaController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Media::find(),
-        ]);
+        $searchModel = new MediaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\User;
-use yii\data\ActiveDataProvider;
+use app\models\searches\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,11 +35,11 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => User::find(),
-        ]);
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -66,8 +66,25 @@ class UserController extends Controller
     {
         $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post()['User'];
+            $data['auth_key'] = str_split(md5(openssl_random_pseudo_bytes(8)), 10)[0];
+            $data['token'] = md5(openssl_random_pseudo_bytes(8));
+            try {
+                $data['password'] = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
+            } catch (\Exception $exception) {
+                return $exception->getMessage();
+            }
+
+            $model->email = $data['email'];
+            $model->password = $data['password'];
+            $model->username = $data['username'];
+            $model->auth_key = $data['auth_key'];
+            $model->token = $data['token'];
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -85,9 +102,28 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->password = null;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post()['User'];
+            $data['auth_key'] = $model->auth_key;
+            $data['token'] = $model->token;
+            try {
+                $data['password'] = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
+            } catch (\Exception $exception) {
+                return $exception->getMessage();
+            }
+
+            $model->email = $data['email'];
+            $model->password = $data['password'];
+            $model->username = $data['username'];
+            $model->auth_key = $data['auth_key'];
+            $model->token = $data['token'];
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
         }
 
         return $this->render('update', [

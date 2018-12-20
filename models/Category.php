@@ -11,6 +11,8 @@ use Yii;
  * @property string $title
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property Document[] $documents
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -46,6 +48,14 @@ class Category extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), ['category_id' => 'id']);
     }
 
     /**

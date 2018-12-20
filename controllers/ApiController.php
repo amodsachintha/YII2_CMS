@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Api;
-use yii\data\ActiveDataProvider;
+use app\models\searches\ApiSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,11 +35,11 @@ class ApiController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Api::find(),
-        ]);
+        $searchModel = new ApiSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

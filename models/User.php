@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "user".
@@ -15,8 +17,10 @@ use Yii;
  * @property string $token
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property Document[] $documents
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -57,6 +61,14 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::className(), ['user_id' => 'id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return UserQuery the active query used by this AR class.
      */
@@ -64,4 +76,59 @@ class User extends \yii\db\ActiveRecord
     {
         return new UserQuery(get_called_class());
     }
+
+    public static function findIdentity($id)
+    {
+        try{
+            return self::find()->where(['id'=>$id])->one();
+        }catch (\Exception $e){
+            return null;
+        }
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        try{
+            return self::find()->where(['access_token'=>$token])->one();
+        }catch (\Exception $e){
+            return null;
+        }
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->auth_key === $authKey;
+    }
+
+    public static function findByEmail($email)
+    {
+        try{
+            return self::find()->where(['email'=>$email])->one();
+        }catch (\Exception $exception){
+            return null;
+        }
+
+    }
+
+    public function validatePassword($password)
+    {
+        if(Yii::$app->getSecurity()->validatePassword($password, $this->password)){
+            return true;
+        }
+        else
+            return false;
+
+    }
+
+
 }
