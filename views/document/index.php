@@ -11,13 +11,17 @@ $this->title = 'Documents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="document-index">
+    <div class="row">
+        <div class="col-sm-10">
+            <h1><?= Html::encode($this->title) ?></h1>
+        </div>
+        <div class="col-sm-2">
+            <p style="margin-top: 25px">
+                <?= Html::a('Create Document', ['create'], ['class' => 'btn btn-success btn-block']) ?>
+            </p>
+        </div>
+    </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Document', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,13 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
-            'category_id',
+//            'id',
+            'user.username',
+            'category.title',
             'title',
-            'content:ntext',
-            //'created_at',
-            //'updated_at',
+//            'content:ntext',
+//            'created_at',
+            'updated_at:datetime',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

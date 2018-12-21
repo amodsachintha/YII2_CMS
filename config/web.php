@@ -11,10 +11,18 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'timeZone' => 'Asia/Colombo',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Jgovosv9lSDUNbZDkIHkrKLsjtV7TnhH',
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'jsOptions' => [ 'position' => \yii\web\View::POS_HEAD ],
+                ],
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

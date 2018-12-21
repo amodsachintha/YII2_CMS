@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="media-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($model->description) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -30,11 +30,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'document_id',
-            'url:url',
+            'document.title',
+            [
+                'label' => 'URL',
+                'format'=>'raw',
+                'value' => function ($model) {
+                    return Html::a('Open',$model->url,['class'=>'btn btn-default btn-sm', 'target'=>'_blank']);
+                }
+            ],
+            [
+                    'label'=>'preview',
+                'format'=>'raw',
+                'value' => function($model){
+                    return "<a href='#' class='thumbnail'>
+                                <img src='$model->url' alt='preview' width='200'>
+                             </a>";
+                }
+            ],
             'description',
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

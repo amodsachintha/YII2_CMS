@@ -22,14 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap4.min.css">
+    <script src="/js/bootstrap4.min.js"></script>
 </head>
 <body style="background-color: rgba(149, 187, 228, 0.5); width: 100%">
 
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark justify-content-between">
-        <a class="navbar-brand" href="/"><img src="/img/logo.png" width="100" alt="home"></a>
+        <a class="navbar-brand text-dark" href="/"><img src="/img/logo2.png" width="35" alt="home"><strong> CMS</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6 offset-3">
             <div class="card text-center shadow bg-light">
                 <div class="card-header">
-                    <a href="/"><img src="/img/logo.png" width="300"></a>
+                    <a href="/"><img src="/img/logo2.png" width="100"></a>
                 </div>
                 <div class="card-body" style="font-size: small">
                     <div class="text-center"><h4><?= Html::encode($this->title) ?></h4></div>

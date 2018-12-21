@@ -8,6 +8,8 @@ use app\models\searches\MediaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use yii\filters\AccessControl;
 
 /**
  * MediaController implements the CRUD actions for Media model.
@@ -24,6 +26,16 @@ class MediaController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update','delete'],
+                        'roles' => ['editor','sadmin'],
+                    ],
                 ],
             ],
         ];
@@ -66,8 +78,22 @@ class MediaController extends Controller
     {
         $model = new Media();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post('Media');
+            $file = UploadedFile::getInstance($model,'url');
+            $fileName = 'uploads/' . md5(time()) .'-'.$file->baseName.'.' . $file->extension;
+            $file->saveAs($fileName);
+            $model->url = '/'.$fileName;
+            $model->document_id = $data['document_id'];
+            $model->description = $data['description'];
+
+            $date = new \DateTime();
+            $model->created_at = $date->format('Y-m-d H:i:s');
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -86,8 +112,21 @@ class MediaController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post('Media');
+            $file = UploadedFile::getInstance($model,'url');
+            $fileName = 'uploads/' . md5(time()) .'-'.$file->baseName.'.' . $file->extension;
+            $file->saveAs($fileName);
+            $model->url = '/'.$fileName;
+            $model->document_id = $data['document_id'];
+            $model->description = $data['description'];
+
+            $date = new \DateTime();
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -104,7 +143,9 @@ class MediaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        unlink(Yii::$app->basePath . '/web/' .$model->url);
+        $model->delete();
 
         return $this->redirect(['index']);
     }

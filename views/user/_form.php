@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\auth\AuthItem;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -12,19 +14,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field(new AuthItem(), 'name')
+        ->dropDownList(
+            ArrayHelper::map(AuthItem::find()->where(['type'=>'1'])->asArray()->all(), 'name', 'name')
+        )
+    ?>
+
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true, 'value'=>random_int(10000,99999)]) ?>
 
-    <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= $form->field($model, 'token')->textInput(['maxlength' => true, 'value'=>md5(random_bytes(8))]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -24,7 +24,8 @@
         "loveorigami/yii2-notification-wrapper": "*",
 		"bower-asset/noty": "^2.3",
 		"bower-asset/jquery-growl": "^1.3",
-        "bizley/quill": "2.3"
+        "bizley/quill": "2.3",
+        "brussens/yii2-bootstrap-select": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

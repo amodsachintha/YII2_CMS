@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Yii::$app->user->isGuest ? '' : Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Yii::$app->user->isGuest ? '' : Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -31,12 +31,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'user_id',
+            'user.username',
             'category_id',
+            'category.title',
             'title',
-            'content:ntext',
-            'created_at',
-            'updated_at',
+            'content:raw',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
+
+    <hr>
+    <p>
+        <strong>Media: </strong>
+        <?php
+        foreach ($media as $item) {
+            if(preg_match('(png|jpeg|jpg|bmp)', $item->url) === 1) {
+                echo "<img src='$item->url' width='200' class='img-thumbnail'> &nbsp;";
+            }
+            else{
+                echo "<a href='$item->url' class='btn btn-warning' target='_blank'>Download File</a> &nbsp;";
+            }
+
+        }
+        ?>
+    </p>
 
 </div>

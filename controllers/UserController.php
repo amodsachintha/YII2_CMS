@@ -8,6 +8,9 @@ use app\models\searches\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use DateTime;
+use yii\filters\AccessControl;
+use HttpInvalidParamException;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -24,6 +27,16 @@ class UserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update','delete'],
+                        'roles' => ['sadmin'],
+                    ],
                 ],
             ],
         ];
@@ -64,10 +77,14 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
+//        Yii::$app->response->format = Response::FORMAT_JSON;
+//        return Yii::$app->request->post();
+
         $model = new User();
 
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post()['User'];
+            $role = Yii::$app->request->post()['AuthItem']['name'];
             $data['auth_key'] = str_split(md5(openssl_random_pseudo_bytes(8)), 10)[0];
             $data['token'] = md5(openssl_random_pseudo_bytes(8));
             try {
@@ -82,7 +99,19 @@ class UserController extends Controller
             $model->auth_key = $data['auth_key'];
             $model->token = $data['token'];
 
+            $date = new DateTime();
+            $model->created_at = $date->format('Y-m-d H:i:s');
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
             if ($model->save()) {
+                $auth = \Yii::$app->authManager;
+                $authorRole = $auth->getRole($role);
+                try {
+                    $auth->assign($authorRole, $model->getId());
+                } catch (\Exception $exception) {
+                    return new HttpInvalidParamException("Failed to assign role!");
+                }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -104,8 +133,10 @@ class UserController extends Controller
         $model = $this->findModel($id);
         $model->password = null;
 
+
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post()['User'];
+            $role = Yii::$app->request->post()['AuthItem']['name'];
             $data['auth_key'] = $model->auth_key;
             $data['token'] = $model->token;
             try {
@@ -120,7 +151,17 @@ class UserController extends Controller
             $model->auth_key = $data['auth_key'];
             $model->token = $data['token'];
 
+            $date = new DateTime();
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
             if ($model->save()) {
+                $auth = \Yii::$app->authManager;
+                $authorRole = $auth->getRole($role);
+                try {
+                    $auth->assign($authorRole, $model->getId());
+                } catch (\Exception $exception) {
+                    return new HttpInvalidParamException("Failed to assign role!");
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 

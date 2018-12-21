@@ -8,6 +8,7 @@ use app\models\searches\CategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -24,6 +25,16 @@ class CategoryController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update','delete'],
+                        'roles' => ['editor','sadmin'],
+                    ],
                 ],
             ],
         ];
@@ -66,8 +77,17 @@ class CategoryController extends Controller
     {
         $model = new Category();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post('Category');
+
+            $model->title = $data['title'];
+            $date = new \DateTime();
+            $model->created_at = $date->format('Y-m-d H:i:s');
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -86,8 +106,17 @@ class CategoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post('Category');
+
+            $model->title = $data['title'];
+            $date = new \DateTime();
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
         }
 
         return $this->render('update', [

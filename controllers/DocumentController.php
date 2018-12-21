@@ -8,6 +8,8 @@ use app\models\searches\DocumentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\filters\AccessControl;
 
 /**
  * DocumentController implements the CRUD actions for Document model.
@@ -24,6 +26,22 @@ class DocumentController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update','delete'],
+                        'roles' => ['editor','sadmin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions'=>['view'],
+                        'roles' => ['?']
+                    ]
+
                 ],
             ],
         ];
@@ -52,8 +70,10 @@ class DocumentController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'media' => $model->media
         ]);
     }
 
@@ -66,8 +86,22 @@ class DocumentController extends Controller
     {
         $model = new Document();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post('Document');
+//            Yii::$app->response->format = Response::FORMAT_JSON;
+//            return $data;
+            $model->user_id = Yii::$app->user->getId();
+            $model->category_id = $data['category_id'];
+            $model->title = $data['title'];
+            $model->content = $data['content'];
+
+            $date = new \DateTime();
+            $model->created_at = $date->format('Y-m-d H:i:s');
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -86,8 +120,22 @@ class DocumentController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post('Document');
+//            Yii::$app->response->format = Response::FORMAT_JSON;
+//            return $data;
+            $model->user_id = Yii::$app->user->getId();
+            $model->category_id = $data['category_id'];
+            $model->title = $data['title'];
+            $model->content = $data['content'];
+
+            $date = new \DateTime();
+            $model->updated_at = $date->format('Y-m-d H:i:s');
+
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
         }
 
         return $this->render('update', [

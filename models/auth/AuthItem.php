@@ -82,7 +82,7 @@ class AuthItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuthItemChildren()
+    public function getAuthItemParent()
     {
         return $this->hasMany(AuthItemChild::className(), ['parent' => 'name']);
     }

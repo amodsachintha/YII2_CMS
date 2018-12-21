@@ -12,12 +12,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="media-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Media', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="row">
+        <div class="col-sm-10">
+            <h1><?= Html::encode($this->title) ?></h1>
+        </div>
+        <div class="col-sm-2">
+            <p style="margin-top: 25px"">
+            <?= Html::a('Add Media', ['create'], ['class' => 'btn btn-success btn-block']) ?>
+            </p>
+        </div>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,8 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'document_id',
-            'url:url',
+//            'document_id',
+            'document.title',
+//            'url:url',
             'description',
             'created_at',
             //'updated_at',
