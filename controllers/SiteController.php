@@ -134,16 +134,6 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
     public function actionDocs(){
         $search = YII::$app->request->get('search');
         if($search !== '' && isset($search)){
