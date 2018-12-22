@@ -36,6 +36,11 @@ class MediaController extends Controller
                         'actions' => ['index','view','create','update','delete'],
                         'roles' => ['editor','sadmin'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update'],
+                        'roles' => ['media_editor'],
+                    ],
                 ],
             ],
         ];
@@ -92,6 +97,7 @@ class MediaController extends Controller
             $model->updated_at = $date->format('Y-m-d H:i:s');
 
             if ($model->save()) {
+                Yii::$app->session->setFlash('success',   'Media created!');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -125,6 +131,7 @@ class MediaController extends Controller
             $model->updated_at = $date->format('Y-m-d H:i:s');
 
             if ($model->save()) {
+                Yii::$app->session->setFlash('success',   'Media updated!');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -145,6 +152,7 @@ class MediaController extends Controller
     {
         $model = $this->findModel($id);
         unlink(Yii::$app->basePath . '/web/' .$model->url);
+        Yii::$app->session->setFlash('success',   'Media deleted from disk!');
         $model->delete();
 
         return $this->redirect(['index']);

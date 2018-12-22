@@ -54,7 +54,7 @@ class Document extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'category_id' => 'Category ID',
-            'title' => 'Title',
+            'title' => 'Document Title',
             'content' => 'Content',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <p>
         <code>http://{hostname:port}/api_scma/media?id=1&key={API_KEY}</code>
-        <a href="/api_scma/media?id=1&key=4ac1a2e928c00767e2119b94ab4d71ad" class="btn btn-default btn-sm" target="_blank"><kbd>GET</kbd> Media (ID=1)</a>
+        <a href="/api_scma/media/view?id=2&key=4ac1a2e928c00767e2119b94ab4d71ad" class="btn btn-default btn-sm" target="_blank"><kbd>GET</kbd> Media (ID=2)</a>
     </p>
 
 </div>

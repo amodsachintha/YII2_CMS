@@ -6,6 +6,9 @@
 /* @var $model app\models\ContactForm */
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
+use app\models\Category;
 
 $this->title = 'Documents';
 $this->params['breadcrumbs'][] = $this->title;
@@ -21,11 +24,47 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-sm-2">
                                     <p style="font-size: x-large; text-align: center"><?= Html::encode($this->title) ?></p>
                                 </div>
-                                <div class="col-sm-8">
-                                    <input id="search" name="search" type="text" class="form-control" placeholder="Search.." value="<?= isset($search) ? $search : ''?>">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <?php
+                                        $data = ArrayHelper::map(Category::find()
+                                            ->orderBy('title')
+                                            ->asArray()
+                                            ->all(), 'title', 'title');
+
+                                        if (isset($cats_from_get)) {
+                                            if ($cats_from_get == null) {
+                                                $values = null;
+                                            } else {
+                                                $values = $cats_from_get;
+                                            }
+                                        } else {
+                                            $values = null;
+                                        }
+                                        echo Select2::widget([
+                                            'name' => 'cat',
+                                            'value' => $values,
+                                            'data' => $data,
+                                            'options' => [
+                                                'placeholder' => 'Select categories..',
+                                                'multiple' => true
+                                            ],
+                                            'pluginOptions' => [
+                                                'tags' => true,
+                                                'tokenSeparators' => [',', ' '],
+                                                'maximumInputLength' => 10
+                                            ],
+                                        ]);
+                                        ?>
+                                    </div>
                                 </div>
-                                <div class="col-sm-2">
-                                    <input type="submit" class="btn btn-default btn-block" value="Search">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input id="search" name="search" type="text" class="form-control" placeholder="Search.." value="<?= isset($search) ? $search : '' ?>">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" type="submit">Search</button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -36,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php
-    if(isset($count) && isset($message)){
+    if (isset($count) && isset($message)) {
         echo "
             <div class='row'>
                 $message

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\searches\ApiSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Apis';
+$this->title = 'API Keys';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="api-index">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'key',
             'hits',
 

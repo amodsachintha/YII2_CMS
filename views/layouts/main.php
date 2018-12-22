@@ -105,9 +105,15 @@ AppAsset::register($this);
                         $url = Yii::$app->basePath.'/views/layouts/sidenav_editor.php';
                         include $url;
                     }
+                    elseif ($role === 'media_editor'){
+                        $url = Yii::$app->basePath.'/views/layouts/sidenav_media_editor.php';
+                        include $url;
+                    }
                     else{
                         echo "ROLE ERROR!";
                     }
+                    $url = Yii::$app->basePath.'/views/layouts/userinfo.php';
+                    include $url;
                 }
 
                 ?>

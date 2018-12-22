@@ -38,6 +38,11 @@ class DocumentController extends Controller
                     ],
                     [
                         'allow' => true,
+                        'actions' => ['index','view','create','update'],
+                        'roles' => ['media_editor'],
+                    ],
+                    [
+                        'allow' => true,
                         'actions'=>['view'],
                         'roles' => ['?']
                     ]
@@ -100,6 +105,7 @@ class DocumentController extends Controller
             $model->updated_at = $date->format('Y-m-d H:i:s');
 
             if($model->save()){
+                Yii::$app->session->setFlash('success',   'Document created!');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -133,6 +139,7 @@ class DocumentController extends Controller
             $model->updated_at = $date->format('Y-m-d H:i:s');
 
             if($model->save()){
+                Yii::$app->session->setFlash('success',   'Document updated!');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -153,7 +160,7 @@ class DocumentController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success',   'Document deleted!');
         return $this->redirect(['index']);
     }
 

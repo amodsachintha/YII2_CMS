@@ -66,6 +66,11 @@ class m181220_091724_init_rbac extends Migration
         $auth->addChild($editor, $updateDocument);
         $auth->addChild($editor, $deleteDocument);
 
+        $editor = $auth->createRole('media_editor');
+        $auth->add($editor);
+        $auth->addChild($editor, $readDocument);
+        $auth->addChild($editor, $updateDocument);
+
         // add "sadmin" role and give permissions
         // as well as the permissions of the "editor" role
         $sadmin = $auth->createRole('sadmin');

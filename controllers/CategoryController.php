@@ -86,6 +86,7 @@ class CategoryController extends Controller
             $model->updated_at = $date->format('Y-m-d H:i:s');
 
             if($model->save()){
+                Yii::$app->session->setFlash('success',   'Category created!');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -114,6 +115,7 @@ class CategoryController extends Controller
             $model->updated_at = $date->format('Y-m-d H:i:s');
 
             if($model->save()){
+                Yii::$app->session->setFlash('success',   'Category updated!');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -134,7 +136,7 @@ class CategoryController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success',   'Category deleted!');
         return $this->redirect(['index']);
     }
 

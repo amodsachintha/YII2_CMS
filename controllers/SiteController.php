@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use app\models\Document;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -136,14 +138,26 @@ class SiteController extends Controller
 
     public function actionDocs(){
         $search = YII::$app->request->get('search');
+        $category = Yii::$app->request->get('cat');
+
         if($search !== '' && isset($search)){
-            $posts = Document::find()
-                ->where(['LIKE', 'title', $search])
-                ->orWhere(['LIKE', 'content', $search])
-                ->all();
+            if(is_null($category)){
+                $cats_from_get = 0;
+                $category = ArrayHelper::getColumn(Category::find()->asArray()->all(),'title');
+            }
+            else{
+                $cats_from_get = 1;
+            }
+
+            $documents = Document::find()
+                ->where(['category.title' => $category])
+                ->andWhere(['OR',['LIKE','document.title',$search],['LIKE','document.content',$search]])
+                ->joinWith(['category'])->all();
+
             $count = Document::find()
-                ->where(['LIKE', 'title', $search])
-                ->orWhere(['LIKE', 'content', $search])->count();
+                ->where(['category.title' => $category])
+                ->andWhere(['OR',['LIKE','document.title',$search],['LIKE','document.content',$search]])
+                ->joinWith(['category'])->count();
 
             if($count > 0){
                 $message = "<div class='alert alert-success alert-dismissible' role='alert'>
@@ -161,10 +175,12 @@ class SiteController extends Controller
                             </div>";
             }
             return $this->render('docs',[
-                'posts' =>  $posts,
+                'posts' =>  $documents,
                 'search' => $search,
                 'count' => $count,
-                'message' => $message
+                'message' => $message,
+                'cats_from_get' => $cats_from_get == 0 ? null : $category,
+
             ]);
         }
 

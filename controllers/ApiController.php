@@ -78,6 +78,7 @@ class ApiController extends Controller
         $model = new Api();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success',   'API Key created!');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -98,6 +99,7 @@ class ApiController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success',   'API Key updated!');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -116,7 +118,7 @@ class ApiController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success',   'API Key deleted!');
         return $this->redirect(['index']);
     }
 
