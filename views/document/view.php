@@ -26,7 +26,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
+    <?= Yii::$app->user->isGuest ?  DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+//            'id',
+//            'user_id',
+//            'user.username',
+//            'category_id',
+            'category.title',
+            'title',
+            'content:raw',
+//            'created_at:datetime',
+            'updated_at:datetime',
+        ],
+    ]) : DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',

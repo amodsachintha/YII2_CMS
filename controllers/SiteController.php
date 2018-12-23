@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\db\Expression;
+use yii\helpers\HtmlPurifier;
 
 class SiteController extends Controller
 {
@@ -66,19 +67,19 @@ class SiteController extends Controller
     public function actionIndex()
     {
 
-        if(Document::find()->count() >= 3){
+        if (Document::find()->count() >= 3) {
             $documents = Document::find()
                 ->orderBy(new Expression('rand()'))
                 ->limit(3)
                 ->all();
             $exist = true;
-        }else{
+        } else {
             $documents = null;
             $exist = false;
         }
 
-        return $this->render('index',[
-            'documents'=> $documents,
+        return $this->render('index', [
+            'documents' => $documents,
             'exist' => $exist,
         ]);
     }
@@ -136,46 +137,76 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionDocs(){
+    public function actionDocs()
+    {
         $search = YII::$app->request->get('search');
         $category = Yii::$app->request->get('cat');
 
-        if($search !== '' && isset($search)){
-            if(is_null($category)){
-                $cats_from_get = 0;
-                $category = ArrayHelper::getColumn(Category::find()->asArray()->all(),'title');
+        $categoryFromButton = Yii::$app->request->get('category');
+        if ($categoryFromButton !== '' && isset($categoryFromButton)) {
+            $documents = Document::find()
+                ->where(['category.title' => $categoryFromButton])
+                ->joinWith(['category'])->all();
+            $count = Document::find()
+                ->where(['category.title' => $categoryFromButton])
+                ->joinWith(['category'])->count();
+
+            if ($count > 0) {
+                $message = "<div class='alert alert-success alert-dismissible' role='alert'>
+                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
+                            <strong>" . $count . "</strong> Documents(s) in " . $categoryFromButton . "</div>";
+            } else {
+                $message = "<div class='alert alert-danger alert-dismissible' role='alert'>
+                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                <span aria-hidden='true'>&times;</span>
+                            </button>
+                            No posts  posts in <strong>" . HTMLPurifier::process($categoryFromButton) . "</strong>
+                            </div>";
             }
-            else{
+
+            return $this->render('docs', [
+                'posts' => $documents,
+                'count' => $count,
+                'message' => $message,
+            ]);
+        }
+
+        if ($search !== '' && isset($search)) {
+            if (is_null($category)) {
+                $cats_from_get = 0;
+                $category = ArrayHelper::getColumn(Category::find()->asArray()->all(), 'title');
+            } else {
                 $cats_from_get = 1;
             }
 
             $documents = Document::find()
                 ->where(['category.title' => $category])
-                ->andWhere(['OR',['LIKE','document.title',$search],['LIKE','document.content',$search]])
+                ->andWhere(['OR', ['LIKE', 'document.title', $search], ['LIKE', 'document.content', $search]])
                 ->joinWith(['category'])->all();
 
             $count = Document::find()
                 ->where(['category.title' => $category])
-                ->andWhere(['OR',['LIKE','document.title',$search],['LIKE','document.content',$search]])
+                ->andWhere(['OR', ['LIKE', 'document.title', $search], ['LIKE', 'document.content', $search]])
                 ->joinWith(['category'])->count();
 
-            if($count > 0){
+            if ($count > 0) {
                 $message = "<div class='alert alert-success alert-dismissible' role='alert'>
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                 <span aria-hidden='true'>&times;</span>
                             </button>
-                            <strong>".$count."</strong> result(s) found!</div>";
-            }
-            else{
+                            <strong>" . $count . "</strong> result(s) found!</div>";
+            } else {
                 $message = "<div class='alert alert-danger alert-dismissible' role='alert'>
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                 <span aria-hidden='true'>&times;</span>
                             </button>
-                            No posts matching posts for <strong>".$search."</strong> found!
+                            No posts matching posts for <strong>" . $search . "</strong> found!
                             </div>";
             }
-            return $this->render('docs',[
-                'posts' =>  $documents,
+            return $this->render('docs', [
+                'posts' => $documents,
                 'search' => $search,
                 'count' => $count,
                 'message' => $message,
@@ -184,13 +215,14 @@ class SiteController extends Controller
             ]);
         }
 
-        return $this->render('docs',[
-            'posts' =>  Document::find()->all()
+        return $this->render('docs', [
+            'posts' => Document::find()->all()
         ]);
 
     }
 
-    public function actionHelp(){
+    public function actionHelp()
+    {
         return $this->render('help');
     }
 }

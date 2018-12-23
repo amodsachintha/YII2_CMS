@@ -17,7 +17,7 @@ use app\models\auth\AuthItem;
     <?= $form->field(new AuthItem(), 'name')
         ->dropDownList(
             ArrayHelper::map(AuthItem::find()->where(['type'=>'1'])->asArray()->all(), 'name', 'name')
-        )
+        )->label('Role Name')
     ?>
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>

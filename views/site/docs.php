@@ -18,13 +18,28 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color: white">
+                        <p style="font-size: x-large; text-align: center"><?= Html::encode($this->title) ?></p>
+                    </div>
                     <div class="panel-body">
                         <form action="/site/docs" method="GET">
                             <div class="row">
-                                <div class="col-sm-2">
-                                    <p style="font-size: x-large; text-align: center"><?= Html::encode($this->title) ?></p>
+                                <div class="col-sm-3">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <?= isset($_GET['category']) ? $_GET['category'] : 'Filter by Category...' ?> &nbsp;<span class="caret"> </span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <?php
+                                                foreach (Category::find()->all() as $category){
+                                                    $catTitle = urlencode($category->title);
+                                                 echo "<li><a href='/site/docs?category=$catTitle'>$category->title</a></li>";
+                                                }
+                                            ?>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-5">
                                     <div class="input-group">
                                         <?php
                                         $data = ArrayHelper::map(Category::find()
