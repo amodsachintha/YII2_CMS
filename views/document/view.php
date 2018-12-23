@@ -7,7 +7,11 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Document */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Documents', 'url' => ['index']];
+if(Yii::$app->user->isGuest){
+    $this->params['breadcrumbs'][] = ['label' => 'Documents', 'url' => ['site/docs']];
+}else{
+    $this->params['breadcrumbs'][] = ['label' => 'Documents', 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
