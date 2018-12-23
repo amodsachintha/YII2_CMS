@@ -78,6 +78,8 @@ AppAsset::register($this);
                     <a href="/" class="list-group-item <?= Yii::$app->request->url === '/site/index' || Yii::$app->request->url == '/'  ? 'active': '' ?>">Home</a>
                     <a href="/site/docs" class="list-group-item <?= strpos(Yii::$app->request->url, 'site/docs') ? 'active': '' ?>">Documents</a>
                     <a href="/site/help" class="list-group-item <?= Yii::$app->request->url === '/site/help' ? 'active': '' ?>">Help (API)</a>
+                    <a href="/site/contact" class="list-group-item <?= Yii::$app->request->url === '/site/contact' ? 'active': '' ?>">Contact Us</a>
+                    <a href="/site/about" class="list-group-item <?= Yii::$app->request->url === '/site/about' ? 'active': '' ?>">About</a>
                     <?=
                     Yii::$app->user->isGuest ? '<a href="/site/login" class="list-group-item list-group-item-success">Login</a>' :
                         Html::beginForm(['/site/logout'], 'post').

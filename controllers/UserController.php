@@ -112,7 +112,7 @@ class UserController extends Controller
                     return new HttpInvalidParamException("Failed to assign role!");
                 }
                 Yii::$app->session->setFlash('success',   'User created!');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         }
 
@@ -167,7 +167,7 @@ class UserController extends Controller
                     return new HttpInvalidParamException("Failed to assign role!");
                 }
                 Yii::$app->session->setFlash('success',   'User updated!');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
 
         }

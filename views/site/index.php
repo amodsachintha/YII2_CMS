@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </a>
     </div>
 
-    <div class="body-content">
+    <div class="body-content" style="margin-bottom: 20px">
 
         <?php
         if($exist){
@@ -50,10 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
                $content = \yii\helpers\HtmlPurifier::process(str_split($document->content,200)[0]);
 
                echo "<div class='col-lg-4'>
-                <div class='panel panel-info' style='height: 210px; box-shadow: 2px 12px 30px -15px rgba(133,133,133,1);'>
-                <div class='panel-heading' style='text-align: center'><strong>$document->title</strong></div>
+                <div class='panel panel-default' style='height: 210px; box-shadow: 2px 12px 30px -15px rgba(133,133,133,1);'>
+                <div class='panel-heading' style='text-align: center'><a href='/document/view?id=$document->id'><strong>$document->title</strong></a></div>
                 <div class='panel-body' style='max-height: 100px; overflow: auto'>$content</div>
-                <div class='panel-footer'><p><a class='btn btn-default' href='/document/view?id=$document->id'>Read More &raquo;</a></p></div>
+                <div class='panel-footer' style='background-color: #FFFFFF'><a class='btn btn-default btn-sm' href='/document/view?id=$document->id'>Read More &raquo;</a></div>
                 </div>
             </div>";
            }

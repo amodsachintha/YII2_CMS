@@ -106,7 +106,7 @@ class DocumentController extends Controller
 
             if($model->save()){
                 Yii::$app->session->setFlash('success',   'Document created!');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         }
 
@@ -140,7 +140,7 @@ class DocumentController extends Controller
 
             if($model->save()){
                 Yii::$app->session->setFlash('success',   'Document updated!');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
 
         }

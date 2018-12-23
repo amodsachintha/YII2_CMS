@@ -32,12 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Role',
                 'value' => function ($model) {
-                    $roles = Yii::$app->authManager->getRolesByUser($model->id);
-                    $r_str = "";
-                    foreach ($roles as $role){
-                       $r_str .= "[".$role->name."]";
+                    foreach (Yii::$app->authManager->getRolesByUser($model->id) as $role){
+                       return $role->name;
                     }
-                    return $r_str;
                 }
             ],
             'username',

@@ -87,7 +87,7 @@ class CategoryController extends Controller
 
             if($model->save()){
                 Yii::$app->session->setFlash('success',   'Category created!');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         }
 
@@ -116,7 +116,7 @@ class CategoryController extends Controller
 
             if($model->save()){
                 Yii::$app->session->setFlash('success',   'Category updated!');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
 
         }
