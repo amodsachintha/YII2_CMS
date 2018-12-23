@@ -20,12 +20,13 @@ class MediaController extends Controller
         }
 
         $c = Api::find()->where(['key' => $key])->count();
-        $apiKey = Api::find()->where(['key' => $key])->one();
-        $apiKey->hits = intval($apiKey->hits)+1;
-        $apiKey->save();
+
         if (intval($c) === 0) {
             return ['msg' => '401: Unauthorized'];
         } else {
+            $apiKey = Api::find()->where(['key' => $key])->one();
+            $apiKey->hits = intval($apiKey->hits)+1;
+            $apiKey->save();
             return Media::find()->asArray()->all();
         }
     }
@@ -40,12 +41,13 @@ class MediaController extends Controller
         }
 
         $c = Api::find()->where(['key' => $key])->count();
-        $apiKey = Api::find()->where(['key' => $key])->one();
-        $apiKey->hits = intval($apiKey->hits)+1;
-        $apiKey->save();
+
         if (intval($c) === 0) {
             return ['msg' => '401: Unauthorized'];
         } else {
+            $apiKey = Api::find()->where(['key' => $key])->one();
+            $apiKey->hits = intval($apiKey->hits)+1;
+            $apiKey->save();
             $media = Media::findOne($id);
             if (!$media) {
                 return ['msg' => '404: Not Found'];

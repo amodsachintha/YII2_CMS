@@ -20,12 +20,12 @@ class DocumentController extends Controller
         }
 
         $c = Api::find()->where(['key' => $key])->count();
-        $apiKey = Api::find()->where(['key' => $key])->one();
-        $apiKey->hits = intval($apiKey->hits)+1;
-        $apiKey->save();
         if (intval($c) === 0) {
             return ['msg' => '401: Unauthorized'];
         } else {
+            $apiKey = Api::find()->where(['key' => $key])->one();
+            $apiKey->hits = intval($apiKey->hits)+1;
+            $apiKey->save();
             return Document::find()->with('category')->with('media')->asArray()->all();
         }
     }
@@ -40,12 +40,13 @@ class DocumentController extends Controller
         }
 
         $c = Api::find()->where(['key' => $key])->count();
-        $apiKey = Api::find()->where(['key' => $key])->one();
-        $apiKey->hits = intval($apiKey->hits)+1;
-        $apiKey->save();
+
         if (intval($c) === 0) {
             return ['msg' => '401: Unauthorized'];
         } else {
+            $apiKey = Api::find()->where(['key' => $key])->one();
+            $apiKey->hits = intval($apiKey->hits)+1;
+            $apiKey->save();
             $document = Document::findOne($id);
             if (!$document) {
                 return ['msg' => '404: Not Found'];

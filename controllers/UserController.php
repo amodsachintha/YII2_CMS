@@ -158,10 +158,8 @@ class UserController extends Controller
                 $auth = \Yii::$app->authManager;
                 $currentRoles = $auth->getRolesByUser($model->getId());
                 foreach ($currentRoles as $currentRole){
-                    $str = $currentRole;
+                    $auth->revoke($currentRole,$model->getId());
                 }
-                $currentRole = $auth->getRole($str->name);
-                $auth->revoke($currentRole,$model->getId());
                 $authorRole = $auth->getRole($role);
                 try {
                     $auth->assign($authorRole, $model->getId());
