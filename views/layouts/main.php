@@ -76,7 +76,7 @@ AppAsset::register($this);
             <div class="col-sm-2" style="text-align: center;">
                 <div class="list-group" style="box-shadow: 2px 12px 30px -15px rgba(133,133,133,1);">
                     <a href="/" class="list-group-item <?= Yii::$app->request->url === '/site/index' || Yii::$app->request->url == '/'  ? 'active': '' ?>">Home</a>
-                    <a href="/site/docs" class="list-group-item <?= Yii::$app->request->url === '/site/docs' ? 'active': '' ?>">Documents</a>
+                    <a href="/site/docs" class="list-group-item <?= strpos(Yii::$app->request->url, 'site/docs') ? 'active': '' ?>">Documents</a>
                     <a href="/site/help" class="list-group-item <?= Yii::$app->request->url === '/site/help' ? 'active': '' ?>">Help (API)</a>
                     <?=
                     Yii::$app->user->isGuest ? '<a href="/site/login" class="list-group-item list-group-item-success">Login</a>' :

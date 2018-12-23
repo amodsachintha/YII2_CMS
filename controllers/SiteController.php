@@ -146,6 +146,7 @@ class SiteController extends Controller
         if ($categoryFromButton !== '' && isset($categoryFromButton)) {
             $documents = Document::find()
                 ->where(['category.title' => $categoryFromButton])
+                ->orderBy(['document.created_at'=>SORT_DESC])
                 ->joinWith(['category'])->all();
             $count = Document::find()
                 ->where(['category.title' => $categoryFromButton])
@@ -184,6 +185,7 @@ class SiteController extends Controller
             $documents = Document::find()
                 ->where(['category.title' => $category])
                 ->andWhere(['OR', ['LIKE', 'document.title', $search], ['LIKE', 'document.content', $search]])
+                ->orderBy(['document.created_at'=>SORT_DESC])
                 ->joinWith(['category'])->all();
 
             $count = Document::find()
@@ -216,7 +218,7 @@ class SiteController extends Controller
         }
 
         return $this->render('docs', [
-            'posts' => Document::find()->all()
+            'posts' => Document::find()->orderBy(['document.created_at'=>SORT_DESC])->all()
         ]);
 
     }

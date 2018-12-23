@@ -106,6 +106,11 @@ $this->params['breadcrumbs'][] = $this->title;
         $author = $post->user->username;
         $category = $post->category->title;
         $urlEncodedCat = urlencode($post->category->title);
+        try {
+            $created_at = \Yii::$app->formatter->asDatetime($post->created_at);
+        }catch (\yii\base\InvalidConfigException $exception){
+            $created_at = "";
+        }
         echo "
               <div class='row'>
                 <div class='panel panel-default'>
@@ -115,14 +120,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class='panel-body'>
                         $content  <a href='/document/view?id=$post->id'>more...</a>
                     </div>
-                    <div class='panel-footer'>
+                    <div class='panel-footer' style='background-color: white'>
                         <div class='row'>
                             <div class='col-md-3'><a href='/site/docs?category=$urlEncodedCat'><button type='button' class='btn btn-default btn-xs'>
                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> $category
                                     </button></a></div>
                             <div class='col-md-3'><span class='glyphicon glyphicon-user'></span> <span class='badge' style='background-color: #5cb85c'> $author</span></div>
-                            <div class='col-md-3'><i>created at: $post->created_at</i></div>
-                            <div class='col-md-3' align='right'><a href='/document/view?id=$post->id' class='btn btn-primary'>View Full</a></div>
+                            <div class='col-md-3'><small>$created_at</small></div>
+                            <div class='col-md-3' align='right'><a href='/document/view?id=$post->id' class='btn btn-primary btn-sm'>View Full</a></div>
                         </div>
                     </div>
                  </div>
