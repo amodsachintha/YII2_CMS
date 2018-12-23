@@ -17,9 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="box-shadow: 2px 12px 30px -15px rgba(133,133,133,1);">
                     <div class="panel-heading" style="background-color: white">
-                        <p style="font-size: x-large; text-align: center"><?= Html::encode($this->title) ?></p>
+                        <p style="font-size: x-large; text-align: center; margin-top: -4px; margin-bottom: -5px"><?= Html::encode($this->title) ?></p>
                     </div>
                     <div class="panel-body">
                         <form action="/site/docs" method="GET">
@@ -27,13 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-sm-3">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <?= isset($_GET['category']) ? $_GET['category'] : 'Filter by Category...' ?> &nbsp;<span class="caret"> </span>
+                                            <?= isset($_GET['category']) ? "<span class='glyphicon glyphicon-tags'> </span> ".$_GET['category'] : 'Filter by Category...' ?> &nbsp;<span class="caret"> </span>
                                         </button>
                                         <ul class="dropdown-menu">
                                             <?php
-                                                foreach (Category::find()->all() as $category){
+                                                foreach (Category::find()->orderBy('title')->all() as $category){
                                                     $catTitle = urlencode($category->title);
-                                                 echo "<li><a href='/site/docs?category=$catTitle'>$category->title</a></li>";
+                                                 echo "<li><a href='/site/docs?category=$catTitle'><span class='glyphicon glyphicon-tag'></span> $category->title</a></li>";
                                                 }
                                             ?>
                                         </ul>
@@ -105,6 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $content = \yii\helpers\HtmlPurifier::process(str_split($post->content, 500)[0]);
         $author = $post->user->username;
         $category = $post->category->title;
+        $urlEncodedCat = urlencode($post->category->title);
         echo "
               <div class='row'>
                 <div class='panel panel-default'>
@@ -116,10 +117,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class='panel-footer'>
                         <div class='row'>
-                            <div class='col-md-3'>Category: <span class='label label-default'> $category</span></div>
-                            <div class='col-md-3'>author: <span class='label label-primary'> $author</span></div>
+                            <div class='col-md-3'><a href='/site/docs?category=$urlEncodedCat'><button type='button' class='btn btn-default btn-xs'>
+                                            <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> $category
+                                    </button></a></div>
+                            <div class='col-md-3'><span class='glyphicon glyphicon-user'></span> <span class='badge' style='background-color: #5cb85c'> $author</span></div>
                             <div class='col-md-3'><i>created at: $post->created_at</i></div>
-                            <div class='col-md-3' align='right'><a href='/document/view?id=$post->id' class='btn btn-success'>View Full</a></div>
+                            <div class='col-md-3' align='right'><a href='/document/view?id=$post->id' class='btn btn-primary'>View Full</a></div>
                         </div>
                     </div>
                  </div>

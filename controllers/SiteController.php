@@ -156,13 +156,13 @@ class SiteController extends Controller
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                 <span aria-hidden='true'>&times;</span>
                             </button>
-                            <strong>" . $count . "</strong> Documents(s) in " . $categoryFromButton . "</div>";
+                            <strong>" . $count . "</strong> Document(s) in " . $categoryFromButton . ".</div>";
             } else {
                 $message = "<div class='alert alert-danger alert-dismissible' role='alert'>
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                 <span aria-hidden='true'>&times;</span>
                             </button>
-                            No posts  posts in <strong>" . HTMLPurifier::process($categoryFromButton) . "</strong>
+                            No document(s) in <strong>" . HTMLPurifier::process($categoryFromButton) . ".</strong>
                             </div>";
             }
 
