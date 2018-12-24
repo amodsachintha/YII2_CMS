@@ -26,7 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row">
                                 <div class="col-sm-3">
                                     <form>
-                                        <select id="target" accesskey="E" onchange="goToNewPage()" class="form-control form-control-sm">
+                                        <select id="target" accesskey="E" onchange="goToNewPage()" class="form-control">
+                                            <option value="" disabled <?= isset($_GET['category']) ? '': 'selected' ?>>Filter by Category..</option>
                                             <?php
                                             foreach (Category::find()->orderBy('title')->all() as $category){
                                                 if(isset($_GET['category'])){
