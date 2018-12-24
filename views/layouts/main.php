@@ -23,14 +23,52 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/spacelab.css">
+<!--    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">-->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <?php
+    if(strpos(Yii::$app->request->url, 'document')){
+        echo "<link  href='/css/viewer.min.css' rel='stylesheet'>
+    <script src='/js/viewer.min.js'></script>
+    <style>
+    .docs-pictures {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .docs-pictures > li {
+        border: 1px solid transparent;
+        float: left;
+        height: calc(100% / 3);
+        margin: 0 -1px -1px 0;
+        overflow: hidden;
+        width: calc(100% / 4.5);
+    }
+
+    .docs-pictures > li > img {
+        cursor: -webkit-zoom-in;
+        cursor: zoom-in;
+        width: 100%;
+        border: #c8cbcf solid 1px;
+        margin-left: 10px;
+    }
+
+</style>
+    
+    ";
+    }
+    ?>
+
     <script src="/js/tinymce/tinymce.min.js"></script>
     <script>tinymce.init({
             selector:'textarea',
             plugins : 'advlist autolink link lists print preview',
         });</script>
 </head>
+
+
 <body>
 <?php $this->beginBody() ?>
 

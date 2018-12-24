@@ -25,19 +25,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         <form action="/site/docs" method="GET">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <?= isset($_GET['category']) ? "<span class='glyphicon glyphicon-tags'> </span> ".$_GET['category'] : 'Filter by Category...' ?> &nbsp;<span class="caret"> </span>
-                                        </button>
-                                        <ul class="dropdown-menu">
+                                    <form>
+                                        <select id="target" accesskey="E" onchange="goToNewPage()" class="form-control form-control-sm">
                                             <?php
-                                                foreach (Category::find()->orderBy('title')->all() as $category){
-                                                    $catTitle = urlencode($category->title);
-                                                 echo "<li><a href='/site/docs?category=$catTitle'><span class='glyphicon glyphicon-tag'></span> $category->title</a></li>";
+                                            foreach (Category::find()->orderBy('title')->all() as $category){
+                                                if(isset($_GET['category'])){
+                                                    if($category->title == $_GET['category']){
+                                                        $selected = "selected";
+                                                    }
+                                                    else{
+                                                        $selected = "";
+                                                    }
+                                                }else{
+                                                    $selected = "";
                                                 }
+                                                $catTitle = urlencode($category->title);
+                                                echo "<option value='/site/docs?category=$catTitle' $selected>$category->title</option>";
+                                            }
                                             ?>
-                                        </ul>
-                                    </div>
+                                        </select>
+                                    </form>
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="input-group">
@@ -137,5 +144,13 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
     ?>
+
+    <script>
+        function goToNewPage() {
+            if(document.getElementById('target').value){
+                window.location.href = document.getElementById('target').value;
+            }
+        }
+    </script>
 
 </div>

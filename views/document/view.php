@@ -62,16 +62,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <strong>Media: </strong>
         <?php
+        echo "<div>
+                    <ul id='images' class='docs-pictures clearfix'>";
         foreach ($media as $item) {
             if(preg_match('(png|jpeg|jpg|bmp)', $item->url) === 1) {
-                echo "<img src='$item->url' width='200' class='img-thumbnail'> &nbsp;";
+                echo "<li><img src='$item->url' alt='$item->description' class='img-thumbnail'></li>";
             }
             else{
-                echo "<a href='$item->url' class='btn btn-warning' target='_blank'>Download File</a> &nbsp;";
+                echo "<li><a href='$item->url' class='btn btn-warning' target='_blank'>Download File</a></li>";
             }
-
         }
+        echo "</ul></div>";
         ?>
     </p>
+
+    <script>
+        const gallery = new Viewer(document.getElementById('images'),{
+            backdrop: true
+        });
+    </script>
 
 </div>
