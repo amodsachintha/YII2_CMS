@@ -23,9 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     <link rel="stylesheet" href="/css/bootstrap4.min.css">
+    <link rel="stylesheet" href="/css/bootstrap4.css">
     <script src="/js/bootstrap4.min.js"></script>
 </head>
-<body style="background-color: rgba(149, 187, 228, 0.5); width: 100%">
+<body style="background-color: rgba(255, 255, 255, 1); width: 100%">
 
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark justify-content-between">
@@ -40,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </nav>
     <div class="row" style="margin-top: 100px">
         <div class="col-md-6 offset-3">
-            <div class="card text-center shadow bg-light">
+            <div class="card text-center shadow ">
                 <div class="card-header">
                     <a href="/"><img src="/img/logo2.png" width="100"></a>
                 </div>
@@ -66,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <div class="form-group">
                         <div class="">
-                            <?= Html::submitButton('Login', ['class' => 'btn btn-outline-primary btn-block', 'name' => 'login-button']) ?>
+                            <?= Html::submitButton('Login', ['class' => 'btn btn-success btn-block', 'name' => 'login-button']) ?>
                         </div>
                     </div>
 

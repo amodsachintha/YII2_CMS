@@ -90,7 +90,7 @@ AppAsset::register($this);
             'brandUrl' => Yii::$app->homeUrl,
             'options' => [
                 'class' => 'navbar navbar-default',
-                'style'=> 'background-color: white; border:none; padding-bottom:7px;'
+                'style'=> 'background-color: white; border:none; padding-bottom:7px; box-shadow: 2px 12px 9px -12px rgba(133,133,133,1); margin-top: 5px'
             ],
             'innerContainerOptions' => ['class' => 'container-fluid',]
         ]);
